@@ -1,0 +1,97 @@
+﻿<UserControl
+    x:Class="WinUIPlayground.Views.ImageResultGridItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:WinUIPlayground.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:WinUIPlayground.ViewModels"
+    d:DataContext="{d:DesignInstance viewModels:ImageViewModel}"
+    mc:Ignorable="d">
+    <Grid PointerEntered="element_PointerEntered" PointerExited="element_PointerExited">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MaxHeight="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" MaxHeight="100" />
+        </Grid.RowDefinitions>
+        <Image
+            x:Name="Image"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            CenterPoint="100,0,1"
+            Scale="1.15,1.15,1"
+            Source="{Binding ThumbnailUri}">
+            <Image.ScaleTransition>
+                <Vector3Transition Duration="0:0:0.5" />
+            </Image.ScaleTransition>
+        </Image>
+        <Rectangle
+            x:Name="VignetteTop"
+            Grid.Row="0"
+            IsHitTestVisible="False"
+            Opacity="0">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Offset="0.1" Color="#80000000" />
+                    <GradientStop Offset="0.9" Color="#00000000" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+            <Rectangle.OpacityTransition>
+                <ScalarTransition Duration="0:0:0.5" />
+            </Rectangle.OpacityTransition>
+        </Rectangle>
+        <TextBlock
+            x:Name="Alt"
+            Grid.Row="0"
+            Margin="15,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            FontWeight="SemiBold"
+            Opacity="0"
+            Text="{Binding Alt}"
+            TextAlignment="Center"
+            TextWrapping="Wrap">
+            <TextBlock.OpacityTransition>
+                <ScalarTransition Duration="0:0:0.5" />
+            </TextBlock.OpacityTransition>
+            <TextBlock.TranslationTransition>
+                <Vector3Transition Duration="0:0:0.7" />
+            </TextBlock.TranslationTransition>
+        </TextBlock>
+        <Rectangle
+            x:Name="VignetteBottom"
+            Grid.Row="2"
+            IsHitTestVisible="False"
+            Opacity="0">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Offset="0.1" Color="#00000000" />
+                    <GradientStop Offset="0.9" Color="#80000000" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+            <Rectangle.OpacityTransition>
+                <ScalarTransition Duration="0:0:0.5" />
+            </Rectangle.OpacityTransition>
+        </Rectangle>
+        <TextBlock
+            x:Name="Photographer"
+            Grid.Row="2"
+            Margin="15,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Opacity="0"
+            TextAlignment="Center"
+            TextWrapping="Wrap">
+            <Run Text="by" />
+            <Run Text="{Binding Photographer}" />
+            <TextBlock.OpacityTransition>
+                <ScalarTransition Duration="0:0:0.5" />
+            </TextBlock.OpacityTransition>
+            <TextBlock.TranslationTransition>
+                <Vector3Transition Duration="0:0:0.7" />
+            </TextBlock.TranslationTransition>
+        </TextBlock>
+    </Grid>
+</UserControl>
