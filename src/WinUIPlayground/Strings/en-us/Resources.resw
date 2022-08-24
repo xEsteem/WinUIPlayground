@@ -153,4 +153,10 @@
   <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
     <value>https://YourPrivacyUrlGoesHere/</value>
   </data>
+  <data name="Settings_Pexels.Text" xml:space="preserve">
+    <value>Pexels</value>
+  </data>
+  <data name="Settings_Pexels_ApiKey.Text" xml:space="preserve">
+    <value>Api Key</value>
+  </data>
 </root>

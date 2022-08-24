@@ -1,6 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CommunityToolkit.WinUI.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-
 using WinUIPlayground.Activation;
 using WinUIPlayground.Contracts.Services;
 using WinUIPlayground.Views;
@@ -12,13 +12,15 @@ public class ActivationService : IActivationService
     private readonly ActivationHandler<LaunchActivatedEventArgs> _defaultHandler;
     private readonly IEnumerable<IActivationHandler> _activationHandlers;
     private readonly IThemeSelectorService _themeSelectorService;
+    private readonly IPexelsImageSearchService _imageSearchService;
     private UIElement? _shell = null;
 
-    public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, IThemeSelectorService themeSelectorService)
+    public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler, IEnumerable<IActivationHandler> activationHandlers, IThemeSelectorService themeSelectorService, IPexelsImageSearchService imageSearchService)
     {
         _defaultHandler = defaultHandler;
         _activationHandlers = activationHandlers;
         _themeSelectorService = themeSelectorService;
+        _imageSearchService = imageSearchService;
     }
 
     public async Task ActivateAsync(object activationArgs)
@@ -60,7 +62,10 @@ public class ActivationService : IActivationService
 
     private async Task InitializeAsync()
     {
+        ImageCache.Instance.MaxMemoryCacheCount = 200;
+
         await _themeSelectorService.InitializeAsync().ConfigureAwait(false);
+        await _imageSearchService.InitializeAsync().ConfigureAwait(false);
         await Task.CompletedTask;
     }
 

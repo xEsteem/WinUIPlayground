@@ -7,50 +7,53 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 
 using Windows.ApplicationModel;
-
+using CommunityToolkit.Diagnostics;
 using WinUIPlayground.Contracts.Services;
 using WinUIPlayground.Helpers;
+using WinUIPlayground.Services;
 
 namespace WinUIPlayground.ViewModels;
 
-public class SettingsViewModel : ObservableRecipient
+public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IThemeSelectorService _themeSelectorService;
+    private readonly IPexelsImageSearchService _pexelsImageSearchService;
+
+    [ObservableProperty]
     private ElementTheme _elementTheme;
+
+    [ObservableProperty]
     private string _versionDescription;
 
-    public ElementTheme ElementTheme
-    {
-        get => _elementTheme;
-        set => SetProperty(ref _elementTheme, value);
-    }
+    [ObservableProperty]
+    private string _pexelsApiKey;
 
-    public string VersionDescription
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, IPexelsImageSearchService pexelsImageSearchService)
     {
-        get => _versionDescription;
-        set => SetProperty(ref _versionDescription, value);
-    }
+        Guard.IsNotNull(themeSelectorService);
+        Guard.IsNotNull(pexelsImageSearchService);
 
-    public ICommand SwitchThemeCommand
-    {
-        get;
-    }
-
-    public SettingsViewModel(IThemeSelectorService themeSelectorService)
-    {
         _themeSelectorService = themeSelectorService;
-        _elementTheme = _themeSelectorService.Theme;
-        _versionDescription = GetVersionDescription();
+        _pexelsImageSearchService = pexelsImageSearchService;
 
-        SwitchThemeCommand = new RelayCommand<ElementTheme>(
-            async (param) =>
-            {
-                if (ElementTheme != param)
-                {
-                    ElementTheme = param;
-                    await _themeSelectorService.SetThemeAsync(param);
-                }
-            });
+        _elementTheme = _themeSelectorService.Theme;
+        _pexelsApiKey = _pexelsImageSearchService.ApiKey;
+        _versionDescription = GetVersionDescription();
+    }
+
+    partial void OnPexelsApiKeyChanged(string value)
+    {
+        _pexelsImageSearchService.SetApiKeyAsync(value);
+    }
+
+    [RelayCommand]
+    private async Task SwitchTheme(ElementTheme targetTheme)
+    {
+        if (ElementTheme != targetTheme)
+        {
+            ElementTheme = targetTheme;
+            await _themeSelectorService.SetThemeAsync(targetTheme);
+        }
     }
 
     private static string GetVersionDescription()
@@ -61,7 +64,7 @@ public class SettingsViewModel : ObservableRecipient
         {
             var packageVersion = Package.Current.Id.Version;
 
-            version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
+            version = new Version(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
         }
         else
         {

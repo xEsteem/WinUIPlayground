@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using CommunityToolkit.Diagnostics;
 using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -18,6 +19,12 @@ public sealed partial class ImageSearchPage : Page
     {
         ViewModel = App.GetService<ImageSearchViewModel>();
         DataContext = ViewModel;
+
         InitializeComponent();
+    }
+
+    private void OnImageThumbnailClick(object sender, ItemClickEventArgs e)
+    {
+        throw new NotImplementedException();
     }
 }

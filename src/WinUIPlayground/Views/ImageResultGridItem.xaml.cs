@@ -28,18 +28,16 @@ public sealed partial class ImageResultGridItem : UserControl
 
     private void element_PointerEntered(object sender, PointerRoutedEventArgs e)
     {
-        this.Image.Scale = new Vector3(1.05f, 1.05f, 1);
         this.VignetteTop.Opacity = 1d;
         this.VignetteBottom.Opacity = 1d;
         this.Alt.Opacity = 1d;
-        this.Alt.Translation = new Vector3(0,15,0);
+        this.Alt.Translation = new Vector3(0,12,0);
         this.Photographer.Opacity = 1d;
-        this.Photographer.Translation = new Vector3(0,-15,0);
+        this.Photographer.Translation = new Vector3(0,-12,0);
     }
 
     private void element_PointerExited(object sender, PointerRoutedEventArgs e)
     {
-        this.Image.Scale = new Vector3(1.15f, 1.15f, 1);
         this.VignetteTop.Opacity = 0d;
         this.VignetteBottom.Opacity = 0d;
         this.Alt.Opacity = 0d;

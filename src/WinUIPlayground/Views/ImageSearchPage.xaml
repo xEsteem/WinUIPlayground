@@ -10,34 +10,36 @@
     xmlns:views="using:WinUIPlayground.Views"
     mc:Ignorable="d">
 
-    <Grid RowSpacing="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <TextBox
-            Grid.Row="0"
-            PlaceholderText="Search term..."
-            Text="{x:Bind ViewModel.SearchTerm, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-        <GridView
-            Grid.Row="1"
-            ItemsSource="{x:Bind ViewModel.Images, Mode=OneWay}"
-            SelectionMode="Single">
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="viewModels:ImageViewModel">
-                    <views:ImageResultGridItem DataContext="{Binding}" />
-                </DataTemplate>
-            </GridView.ItemTemplate>
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <controls:StaggeredPanel
-                        Padding="0,0,10,0"
-                        HorizontalAlignment="Stretch"
-                        ColumnSpacing="5"
-                        DesiredColumnWidth="300"
-                        RowSpacing="5" />
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-        </GridView>
-    </Grid>
+    <Frame SourcePageType="views:BlankPage1" />
+    <!-- <Grid RowSpacing="10"> -->
+    <!--     <Grid.RowDefinitions> -->
+    <!--         <RowDefinition Height="Auto" /> -->
+    <!--         <RowDefinition Height="*" /> -->
+    <!--     </Grid.RowDefinitions> -->
+    <!--  <TextBox  -->
+    <!--  Grid.Row="0"  -->
+    <!--  PlaceholderText="Search term..."  -->
+    <!--  Text="{x:Bind ViewModel.SearchTerm, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />  -->
+    <!--  <GridView  -->
+    <!--  Grid.Row="1"  -->
+    <!--  IsItemClickEnabled="True"  -->
+    <!--  ItemsSource="{x:Bind ViewModel.Images, Mode=OneWay}"  -->
+    <!--  SelectionMode="None">  -->
+    <!--         <GridView.ItemTemplate> -->
+    <!--             <DataTemplate x:DataType="viewModels:ImageViewModel"> -->
+    <!--                 <views:ImageResultGridItem DataContext="{Binding}" /> -->
+    <!--             </DataTemplate> -->
+    <!--         </GridView.ItemTemplate> -->
+    <!--         <GridView.ItemsPanel> -->
+    <!--             <ItemsPanelTemplate> -->
+    <!--  <controls:StaggeredPanel  -->
+    <!--  Padding="0,0,10,0"  -->
+    <!--  HorizontalAlignment="Stretch"  -->
+    <!--  ColumnSpacing="5"  -->
+    <!--  DesiredColumnWidth="300"  -->
+    <!--  RowSpacing="5" />  -->
+    <!--             </ItemsPanelTemplate> -->
+    <!--         </GridView.ItemsPanel> -->
+    <!--     </GridView> -->
+    <!-- </Grid> -->
 </Page>

@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using CommunityToolkit.Diagnostics;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 using WinUIPlayground.ViewModels;
 
@@ -16,5 +18,10 @@ public sealed partial class SettingsPage : Page
     {
         ViewModel = App.GetService<SettingsViewModel>();
         InitializeComponent();
+    }
+
+    private void OnShowApiKeyTeachingTipClicked(object sender, RoutedEventArgs e)
+    {
+        ApiKeyTeachingTip.IsOpen = true;
     }
 }

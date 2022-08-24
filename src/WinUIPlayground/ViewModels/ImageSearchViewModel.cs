@@ -1,31 +1,52 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Net;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.Common.Collections;
 using CommunityToolkit.Diagnostics;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using PexelsDotNetSDK.Api;
 using PexelsDotNetSDK.Models;
+using WinUIPlayground.Contracts.Services;
+using System;
+using CommunityToolkit.WinUI.UI;
 
 namespace WinUIPlayground.ViewModels;
 
 public partial class ImageSearchViewModel : ObservableRecipient
 {
-    // TODO: turn into a service
-    private readonly PexelsClient _imageSearchClient;
     private readonly ImageSearchResultSource _imageSearchResultSource;
 
     [ObservableProperty]
     private string? _searchTerm;
-    
+
+    [ObservableProperty]
+    private bool _validApiKey;
+
     public IncrementalLoadingCollection<ImageSearchResultSource, ImageViewModel> Images
     {
         get;
     }
 
-    public ImageSearchViewModel()
+    public ImageSearchViewModel(IPexelsImageSearchService pexelsImageSearchService)
     {
-        _imageSearchClient = new PexelsClient("TODO: PUT THIS IN SETTINGS?");
-        _imageSearchResultSource = new ImageSearchResultSource(string.Empty, _imageSearchClient);
-        Images = new IncrementalLoadingCollection<ImageSearchResultSource, ImageViewModel>(_imageSearchResultSource, 80);
+        _imageSearchResultSource = new ImageSearchResultSource(string.Empty, pexelsImageSearchService.Client);
+        Images = new IncrementalLoadingCollection<ImageSearchResultSource, ImageViewModel>(_imageSearchResultSource, 80, onError: OnImageLoadError);
+    }
+
+    private void OnImageLoadError(Exception obj)
+    {
+        if (obj is ArgumentNullException)
+        {
+            // TODO: Point towards setting API key
+        }
+
+        if (obj.InnerException is ErrorResponse)
+        {
+            // TODO: Point towards updating API key
+        }
+
+        this.ValidApiKey = false;
     }
 
     partial void OnSearchTermChanged(string? value)
@@ -37,12 +58,10 @@ public partial class ImageSearchViewModel : ObservableRecipient
 
 public class ImageSearchResultSource : IIncrementalSource<ImageViewModel>
 {
-    private readonly PexelsClient _imageSearchClient;
+    private readonly PexelsClient? _imageSearchClient;
 
-    public ImageSearchResultSource(string searchTerm, PexelsClient imageSearchClient)
+    public ImageSearchResultSource(string searchTerm, PexelsClient? imageSearchClient)
     {
-        Guard.IsNotNull(imageSearchClient);
-
         _imageSearchClient = imageSearchClient;
         SearchTerm = searchTerm;
     }
@@ -55,18 +74,19 @@ public class ImageSearchResultSource : IIncrementalSource<ImageViewModel>
 
     public async Task<IEnumerable<ImageViewModel>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken)
     {
+        Guard.IsNotNull(this._imageSearchClient);
+
         if (string.IsNullOrWhiteSpace(SearchTerm))
         {
             return Enumerable.Empty<ImageViewModel>();
         }
 
-        var images = await this._imageSearchClient.SearchPhotosAsync(this.SearchTerm, page:pageIndex + 1, pageSize: pageSize);
+        var images = await this._imageSearchClient.SearchPhotosAsync(this.SearchTerm, page: pageIndex + 1, pageSize: pageSize);
         return images.photos.Select(x => new ImageViewModel(x));
     }
 }
 
-
-public class ImageViewModel : ObservableObject
+public partial class ImageViewModel : ObservableObject
 {
     private readonly Photo _searchResult;
 
@@ -82,4 +102,8 @@ public class ImageViewModel : ObservableObject
     public string Uri => _searchResult.source.original;
 
     public string ThumbnailUri => _searchResult.source.medium;
+
+    public int Width => this._searchResult.width;
+
+    public int Height => this._searchResult.height;
 }
