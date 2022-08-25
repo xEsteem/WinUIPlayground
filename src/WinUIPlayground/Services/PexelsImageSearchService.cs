@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CommunityToolkit.WinUI.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using PexelsDotNetSDK.Api;
 using WinUIPlayground.Contracts.Services;
@@ -32,8 +33,11 @@ public class PexelsImageSearchService : IPexelsImageSearchService
 
     public async Task InitializeAsync()
     {
+        ImageCache.Instance.MaxMemoryCacheCount = 200;
+
         ApiKey = await LoadApiKeyFromSettingsAsync();
         UpdateClient();
+
         await Task.CompletedTask;
     }
 

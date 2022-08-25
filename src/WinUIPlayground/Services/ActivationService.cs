@@ -62,8 +62,6 @@ public class ActivationService : IActivationService
 
     private async Task InitializeAsync()
     {
-        ImageCache.Instance.MaxMemoryCacheCount = 200;
-
         await _themeSelectorService.InitializeAsync().ConfigureAwait(false);
         await _imageSearchService.InitializeAsync().ConfigureAwait(false);
         await Task.CompletedTask;

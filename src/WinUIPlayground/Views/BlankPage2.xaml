@@ -11,40 +11,78 @@
     d:DataContext="{d:DesignInstance viewModels:ImageViewModel}"
     mc:Ignorable="d">
     <controls:DockPanel>
-        <controls:DockPanel controls:DockPanel.Dock="Top">
-            <Button Click="ButtonBase_OnClick" Content="Close" />
-            <TextBlock
-                Margin="{StaticResource MediumLeftRightMargin}"
-                HorizontalAlignment="Left"
-                Style="{ThemeResource SubtitleTextBlockStyle}"
-                Text="{Binding Alt}"
-                TextWrapping="Wrap" />
-        </controls:DockPanel>
-        <StackPanel
-            Width="200"
-            Margin="{ThemeResource SmallTopMargin}"
-            controls:DockPanel.Dock="Right"
-            Spacing="12">
-            <TextBlock
-                HorizontalAlignment="Left"
-                Style="{ThemeResource SubtitleTextBlockStyle}"
-                Text="Image Details" />
-        </StackPanel>
-        <Border animations:Connected.Key="SelectedImage">
-            <controls:ImageEx
-                Margin="0,12,12,12"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                CornerRadius="4"
-                IsCacheEnabled="True"
-                Source="{Binding Uri}">
-                <controls:ImageEx.ContextFlyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem Text="Copy URL" />
-                        <MenuFlyoutItem Text="Download" />
-                    </MenuFlyout>
-                </controls:ImageEx.ContextFlyout>
-            </controls:ImageEx>
-        </Border>
+        <Button
+            HorizontalAlignment="Left"
+            controls:DockPanel.Dock="Top"
+            Click="ButtonBase_OnClick"
+            CornerRadius="4"
+            Style="{ThemeResource NavigationBackButtonNormalStyle}"
+            ToolTipService.Placement="Bottom"
+            ToolTipService.ToolTip="Go back to search results" />
+        <SplitView
+            DisplayMode="Inline"
+            IsPaneOpen="True"
+            PaneBackground="Transparent"
+            PanePlacement="Right">
+            <SplitView.Pane>
+                <ScrollViewer>
+                    <controls:DockPanel Margin="{ThemeResource SmallTopBottomMargin}">
+                        <StackPanel controls:DockPanel.Dock="Bottom" Spacing="12">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                Style="{ThemeResource SubtitleTextBlockStyle}"
+                                Text="Links" />
+                            <HyperlinkButton Content="Image Homepage" NavigateUri="{Binding ImageUri}" />
+                            <HyperlinkButton
+                                Content="Photographer Homepage"
+                                NavigateUri="{Binding PhotographerUri}"
+                                ToolTipService.ToolTip="Photographer" />
+                        </StackPanel>
+                        <StackPanel Spacing="12">
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                Style="{ThemeResource SubtitleTextBlockStyle}"
+                                Text="Image Details" />
+                            <controls:UniformGrid Columns="2">
+                                <TextBlock Text="Alt" />
+                                <TextBlock Text="{Binding Alt}" TextWrapping="WrapWholeWords" />
+                            </controls:UniformGrid>
+                            <controls:UniformGrid Columns="2">
+                                <TextBlock Text="Width" />
+                                <TextBlock>
+                                    <Run Text="{Binding Width}" />
+                                    px</TextBlock>
+                            </controls:UniformGrid>
+                            <controls:UniformGrid Columns="2">
+                                <TextBlock Text="Height" />
+                                <TextBlock>
+                                    <Run Text="{Binding Height}" />
+                                    px</TextBlock>
+                            </controls:UniformGrid>
+                            <controls:UniformGrid Columns="2">
+                                <TextBlock Text="Photographer" />
+                                <TextBlock Text="{Binding Photographer}" />
+                            </controls:UniformGrid>
+                        </StackPanel>
+                    </controls:DockPanel>
+                </ScrollViewer>
+            </SplitView.Pane>
+            <Border animations:Connected.Key="SelectedImage">
+                <controls:ImageEx
+                    Margin="0,12,12,12"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="4"
+                    IsCacheEnabled="True"
+                    Source="{Binding OriginalUri}">
+                    <controls:ImageEx.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Command="{Binding CopyUriToClipboardCommand}" Text="Copy URL" />
+                            <MenuFlyoutItem Command="{Binding DownloadCommand}" Text="Download" />
+                        </MenuFlyout>
+                    </controls:ImageEx.ContextFlyout>
+                </controls:ImageEx>
+            </Border>
+        </SplitView>
     </controls:DockPanel>
 </Page>

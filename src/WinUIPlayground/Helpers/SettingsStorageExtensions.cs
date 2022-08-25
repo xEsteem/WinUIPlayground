@@ -1,5 +1,6 @@
 ﻿using Windows.Storage;
 using Windows.Storage.Streams;
+using CommunityToolkit.WinUI.Helpers;
 
 namespace WinUIPlayground.Helpers;
 
@@ -81,23 +82,13 @@ public static class SettingsStorageExtensions
         if ((item != null) && item.IsOfType(StorageItemTypes.File))
         {
             var storageFile = await folder.GetFileAsync(fileName);
+            if (storageFile == null)
+            {
+                return null;
+            }
+
             var content = await storageFile.ReadBytesAsync();
             return content;
-        }
-
-        return null;
-    }
-
-    public static async Task<byte[]?> ReadBytesAsync(this StorageFile file)
-    {
-        if (file != null)
-        {
-            using IRandomAccessStream stream = await file.OpenReadAsync();
-            using var reader = new DataReader(stream.GetInputStreamAt(0));
-            await reader.LoadAsync((uint)stream.Size);
-            var bytes = new byte[stream.Size];
-            reader.ReadBytes(bytes);
-            return bytes;
         }
 
         return null;
