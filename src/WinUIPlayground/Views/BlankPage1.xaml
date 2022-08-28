@@ -20,12 +20,14 @@
             PlaceholderText="Search term..."
             Text="{Binding SearchTerm, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
         <GridView
+            x:Name="GridView"
             Grid.Row="1"
             animations:Connected.ListItemElementName="Image"
             animations:Connected.ListItemKey="SelectedImage"
             IsItemClickEnabled="True"
-            ItemClick="ListViewBase_OnItemClick"
+            ItemClick="OnSearchResultItemClick"
             ItemsSource="{Binding Images, Mode=OneWay}"
+            Loaded="OnGridViewLoaded"
             SelectionMode="None">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="viewModels:ImageViewModel">

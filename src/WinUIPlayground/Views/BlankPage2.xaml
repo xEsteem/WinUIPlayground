@@ -67,12 +67,25 @@
                     </controls:DockPanel>
                 </ScrollViewer>
             </SplitView.Pane>
-            <Border animations:Connected.Key="SelectedImage">
+            <Grid animations:Connected.Key="SelectedImage">
+                <StackPanel
+                    x:Name="LoadingElement"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="12">
+                    <ProgressRing IsActive="True" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
+                        Text="Loading full sized image" />
+                </StackPanel>
                 <controls:ImageEx
                     Margin="0,12,12,12"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     CornerRadius="4"
+                    ImageExOpened="ImageExBase_OnImageExOpened"
                     IsCacheEnabled="True"
                     Source="{Binding OriginalUri}">
                     <controls:ImageEx.ContextFlyout>
@@ -82,7 +95,7 @@
                         </MenuFlyout>
                     </controls:ImageEx.ContextFlyout>
                 </controls:ImageEx>
-            </Border>
+            </Grid>
         </SplitView>
     </controls:DockPanel>
 </Page>

@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using CommunityToolkit.WinUI.UI.Controls;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,5 +37,10 @@ public sealed partial class BlankPage2 : Page
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
         Frame.GoBack(new SuppressNavigationTransitionInfo());
+    }
+
+    private void ImageExBase_OnImageExOpened(object sender, ImageExOpenedEventArgs e)
+    {
+        this.LoadingElement.Visibility = Visibility.Collapsed;
     }
 }
